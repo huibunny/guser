@@ -1,0 +1,68 @@
+basePath: /v1
+definitions:
+  entity.User:
+    properties:
+      password:
+        example: "123456"
+        type: string
+      username:
+        example: alice
+        type: string
+    type: object
+  v1.doLoginRequest:
+    properties:
+      password:
+        example: "123456"
+        type: string
+      username:
+        example: alice
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  v1.response:
+    properties:
+      message:
+        example: success
+        type: string
+    type: object
+host: localhost:8820
+info:
+  contact: {}
+  description: Using a translation service as an example
+  title: Glogin API
+  version: "1.0"
+paths:
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: Login system
+      operationId: login
+      parameters:
+      - description: Login System
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.doLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+      summary: Login
+      tags:
+      - login
+swagger: "2.0"
