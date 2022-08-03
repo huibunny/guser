@@ -21,6 +21,7 @@ func newLoginRoutes(handler *gin.RouterGroup, t usecase.Login, l logger.Interfac
 	h := handler.Group("/user")
 	{
 		h.POST("/login", r.login)
+		h.POST("/loginwx", r.loginWx)
 	}
 }
 
@@ -41,11 +42,48 @@ type doLoginRequest struct {
 // @Accept      json
 // @Produce     json
 // @Param       request body doLoginRequest true "Login System"
-// @Success     200 {object} entity.User
+// @Success     200 {object} loginResponse
 // @Failure     400 {object} response
 // @Failure     500 {object} response
 // @Router      /user/login [post]
 func (r *loginRoutes) login(c *gin.Context) {
+	var request doLoginRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		r.l.Error(err, "http - v1 - doTranslate")
+		errorResponse(c, http.StatusBadRequest, "invalid request body")
+
+		return
+	}
+
+	errcode, token, err := r.t.Login(
+		c.Request.Context(),
+		entity.User{
+			Username: request.Username,
+			Password: request.Password,
+		},
+	)
+	if err != nil {
+		r.l.Error(err, "http - v1 - doLogin")
+		errorResponse(c, http.StatusInternalServerError, "login service problems")
+
+		return
+	}
+
+	c.JSON(http.StatusOK, loginResponse{ErrCode: errcode, Token: token})
+}
+
+// @Summary     LoginWx
+// @Description Login system By Weixin
+// @ID          loginWx
+// @Tags  	    loginWx
+// @Accept      json
+// @Produce     json
+// @Param       request body doLoginRequest true "Login System By Weixin"
+// @Success     200 {object} loginResponse
+// @Failure     400 {object} response
+// @Failure     500 {object} response
+// @Router      /user/login [post]
+func (r *loginRoutes) loginWx(c *gin.Context) {
 	var request doLoginRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
 		r.l.Error(err, "http - v1 - doTranslate")
