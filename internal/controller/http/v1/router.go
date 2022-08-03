@@ -10,14 +10,14 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	// Swagger docs.
-	_ "glogin/docs"
-	"glogin/internal/usecase"
-	"glogin/pkg/logger"
+	_ "guser/docs"
+	"guser/internal/usecase"
+	"guser/pkg/logger"
 )
 
 // NewRouter -.
 // Swagger spec:
-// @title       Glogin API
+// @title       guser API
 // @description Using a translation service as an example
 // @version     1.0
 // @host        localhost:8820

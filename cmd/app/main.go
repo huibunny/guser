@@ -3,9 +3,10 @@ package main
 import (
 	"flag"
 	"log"
+	"strings"
 
-	"glogin/config"
-	"glogin/internal/app"
+	"guser/config"
+	"guser/internal/app"
 
 	consulutil "github.com/huibunny/gocore/thirdpart/consul"
 )
@@ -23,12 +24,15 @@ func main() {
 	// Configuration
 	cfg := &config.Config{}
 	var err error
+	log.Printf("listen address: %s.", *listenAddr)
 	if len(*configFile) > 0 {
+		strPort := strings.Split(*listenAddr, ":")[1]
 		cfg, err = config.NewConfig(*configFile)
+		app.Run(cfg, strPort)
 	} else if len(*consulAddr) > 0 {
 		consulClient, serviceID, port, err := consulutil.RegisterAndCfgConsul(cfg, *consulAddr, *serviceName, *listenAddr, *consulFolder)
 		if err != nil {
-			log.Fatalf("fail to register consul: %v.", err)
+			log.Fatalf("fail to register consul(%s), serviceID: %s, error: %v.", *consulAddr, serviceID, err)
 		}
 		defer consulutil.DeregisterService(consulClient, serviceID)
 		app.Run(cfg, port)

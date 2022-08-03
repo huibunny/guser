@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"glogin/pkg/postgres"
+	"guser/pkg/postgres"
 )
 
 const _defaultEntityCap = 64

@@ -45,7 +45,54 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entity.User"
+                            "$ref": "#/definitions/v1.loginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/loginwx": {
+            "post": {
+                "description": "Login system By Weixin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "loginWx"
+                ],
+                "summary": "LoginWx",
+                "operationId": "loginWx",
+                "parameters": [
+                    {
+                        "description": "Login System By Weixin",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.doLoginWxRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.loginWxResponse"
                         }
                     },
                     "400": {
@@ -65,19 +112,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "entity.User": {
-            "type": "object",
-            "properties": {
-                "password": {
-                    "type": "string",
-                    "example": "123456"
-                },
-                "username": {
-                    "type": "string",
-                    "example": "alice"
-                }
-            }
-        },
         "v1.doLoginRequest": {
             "type": "object",
             "required": [
@@ -92,6 +126,49 @@ const docTemplate = `{
                 "username": {
                     "type": "string",
                     "example": "alice"
+                }
+            }
+        },
+        "v1.doLoginWxRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "alice"
+                }
+            }
+        },
+        "v1.loginResponse": {
+            "type": "object",
+            "properties": {
+                "errcode": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw"
+                }
+            }
+        },
+        "v1.loginWxResponse": {
+            "type": "object",
+            "properties": {
+                "errcode": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw"
                 }
             }
         },
@@ -113,7 +190,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8820",
 	BasePath:         "/v1",
 	Schemes:          []string{},
-	Title:            "Glogin API",
+	Title:            "guser API",
 	Description:      "Using a translation service as an example",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

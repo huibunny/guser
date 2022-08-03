@@ -9,13 +9,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"glogin/config"
-	v1 "glogin/internal/controller/http/v1"
-	"glogin/internal/usecase"
-	"glogin/internal/usecase/repo"
-	"glogin/pkg/httpserver"
-	"glogin/pkg/logger"
-	"glogin/pkg/postgres"
+	"guser/config"
+	v1 "guser/internal/controller/http/v1"
+	"guser/internal/usecase"
+	"guser/internal/usecase/repo"
+	"guser/pkg/httpserver"
+	"guser/pkg/logger"
+	"guser/pkg/postgres"
 )
 
 // Run creates objects via constructors.

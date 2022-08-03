@@ -5,18 +5,18 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"glogin/internal/entity"
-	"glogin/internal/usecase"
-	"glogin/pkg/logger"
+	"guser/internal/entity"
+	"guser/internal/usecase"
+	"guser/pkg/logger"
 )
 
-type loginWxRoutes struct {
+type loginRoutes struct {
 	t usecase.Login
 	l logger.Interface
 }
 
-func newloginWxRoutes(handler *gin.RouterGroup, t usecase.Login, l logger.Interface) {
-	r := &loginWxRoutes{t, l}
+func newLoginRoutes(handler *gin.RouterGroup, t usecase.Login, l logger.Interface) {
+	r := &loginRoutes{t, l}
 
 	h := handler.Group("/user")
 	{
@@ -25,12 +25,12 @@ func newloginWxRoutes(handler *gin.RouterGroup, t usecase.Login, l logger.Interf
 	}
 }
 
-type loginWxResponse struct {
-	ErrCode int    `json:"errcode" example:"0 - success, 1 - username or password not correct"`
+type loginResponse struct {
+	ErrCode int    `json:"errcode" example:"0"`
 	Token   string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw"`
 }
 
-type doLoginWxRequest struct {
+type doLoginRequest struct {
 	Username string `json:"username" binding:"required"  example:"alice"`
 	Password string `json:"password" binding:"required"  example:"123456"`
 }
@@ -46,7 +46,7 @@ type doLoginWxRequest struct {
 // @Failure     400 {object} response
 // @Failure     500 {object} response
 // @Router      /user/login [post]
-func (r *loginWxRoutes) login(c *gin.Context) {
+func (r *loginRoutes) login(c *gin.Context) {
 	var request doLoginRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
 		r.l.Error(err, "http - v1 - doTranslate")
@@ -72,19 +72,29 @@ func (r *loginWxRoutes) login(c *gin.Context) {
 	c.JSON(http.StatusOK, loginResponse{ErrCode: errcode, Token: token})
 }
 
+type loginWxResponse struct {
+	ErrCode int    `json:"errcode" example:"0"`
+	Token   string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw"`
+}
+
+type doLoginWxRequest struct {
+	Username string `json:"username" binding:"required"  example:"alice"`
+	Password string `json:"password" binding:"required"  example:"123456"`
+}
+
 // @Summary     LoginWx
 // @Description Login system By Weixin
 // @ID          loginWx
 // @Tags  	    loginWx
 // @Accept      json
 // @Produce     json
-// @Param       request body doLoginRequest true "Login System By Weixin"
-// @Success     200 {object} loginResponse
+// @Param       request body doLoginWxRequest true "Login System By Weixin"
+// @Success     200 {object} loginWxResponse
 // @Failure     400 {object} response
 // @Failure     500 {object} response
-// @Router      /user/login [post]
-func (r *loginWxRoutes) loginWx(c *gin.Context) {
-	var request doLoginRequest
+// @Router      /user/loginwx [post]
+func (r *loginRoutes) loginWx(c *gin.Context) {
+	var request doLoginWxRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
 		r.l.Error(err, "http - v1 - doTranslate")
 		errorResponse(c, http.StatusBadRequest, "invalid request body")
@@ -106,5 +116,5 @@ func (r *loginWxRoutes) loginWx(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, loginResponse{ErrCode: errcode, Token: token})
+	c.JSON(http.StatusOK, loginWxResponse{ErrCode: errcode, Token: token})
 }

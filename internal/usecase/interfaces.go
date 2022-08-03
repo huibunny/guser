@@ -4,7 +4,7 @@ package usecase
 import (
 	"context"
 
-	"glogin/internal/entity"
+	"guser/internal/entity"
 )
 
 //go:generate mockgen -source=interfaces.go -destination=./mocks_test.go -package=usecase_test

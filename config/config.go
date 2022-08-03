@@ -20,7 +20,7 @@ type (
 	App struct {
 		Name        string `env-required:"true" yaml:"name"    env:"APP_NAME"`
 		Version     string `env-required:"true" yaml:"version" env:"APP_VERSION"`
-		TokenExpire uint   `env-required:"true" yaml:"token_expire" env:"APP_TOKEN_EXPIRE"`
+		TokenExpire int64  `env-required:"true" yaml:"token_expire" env:"APP_TOKEN_EXPIRE"`
 		Secret      string `env-required:"true" yaml:"secret" env:"APP_SECRET"`
 	}
 

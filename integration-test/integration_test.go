@@ -9,7 +9,7 @@ import (
 
 	. "github.com/Eun/go-hit"
 
-	"glogin/pkg/rabbitmq/rmq_rpc/client"
+	"guser/pkg/rabbitmq/rmq_rpc/client"
 )
 
 const (
