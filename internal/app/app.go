@@ -32,7 +32,7 @@ func Run(cfg *config.Config, port string) {
 	defer pg.Close()
 
 	// Use case
-	loginUserCase := usecase.New(repo.New(pg), cfg.App.TokenExpire, cfg.App.Secret)
+	loginUserCase := usecase.New(repo.New(pg), cfg.App.TokenExpire, cfg.App.Secret, cfg.Wx.AppID, cfg.Wx.AppSecret)
 	// HTTP Server
 	handler := gin.New()
 	v1.NewRouter(handler, l, loginUserCase)

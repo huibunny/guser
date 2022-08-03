@@ -1,6 +1,8 @@
 app:
   name: 'user'
   version: '1.0.0'
+  appid: ''
+  appsecret: ''
   token_expire: 3600
   secret: 'howareyoutoday'
 
@@ -18,3 +20,7 @@ consul:
 postgres:
   pool_max: 2
   url: 'postgresql://dev_user:dev123@dog.ap:5432/user'
+
+wx:
+  appid: ''
+  appsecret: ''

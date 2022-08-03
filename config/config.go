@@ -14,6 +14,7 @@ type (
 		Consul `yaml:"consul"`
 		PG     `yaml:"postgres"`
 		RMQ    `yaml:"rabbitmq"`
+		Wx     `yaml:"wx"`
 	}
 
 	// App -.
@@ -47,6 +48,12 @@ type (
 		ServerExchange string `env-required:"true" yaml:"rpc_server_exchange" env:"RMQ_RPC_SERVER"`
 		ClientExchange string `env-required:"true" yaml:"rpc_client_exchange" env:"RMQ_RPC_CLIENT"`
 		URL            string `env-required:"true" yaml:"url"                 env:"RMQ_URL"`
+	}
+
+	// WX -.
+	Wx struct {
+		AppID     string `env-required:"true" yaml:"appid" env:"APP_APPID"`
+		AppSecret string `env-required:"true" yaml:"appsecret" env:"APP_APPSECRET"`
 	}
 )
 
