@@ -13,6 +13,7 @@ type (
 	// Login -.
 	Login interface {
 		Login(context.Context, entity.User) (int, string, error)
+		LoginWx(context.Context, string) (int, string, error)
 	}
 
 	// UserRepo -.

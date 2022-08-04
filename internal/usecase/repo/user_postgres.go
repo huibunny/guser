@@ -68,7 +68,7 @@ func (r *UserRepo) CheckWxAccount(ctx context.Context, openid, unionid string) (
 		if err != nil {
 			return "", -1, fmt.Errorf("UserRepo - checkWxAccount - r.Builder: %w", err)
 		}
-		insertUserWxAccountSql, _, err := r.Builder.Insert("t_user_wxaccount").Columns("user_id", "wx_accountid").Values("?", "?").ToSql()
+		insertUserWxAccountSql, _, err := r.Builder.Insert("t_user_wxaccount").Columns("user_id", "wxaccount_id").Values("?", "?").ToSql()
 		if err != nil {
 			return "", -1, fmt.Errorf("UserRepo - checkWxAccount - r.Builder: %w", err)
 		}
@@ -94,6 +94,7 @@ func (r *UserRepo) CheckWxAccount(ctx context.Context, openid, unionid string) (
 			return "", -4, fmt.Errorf("UserRepo - checkWxAccount - tx.Exec: %w", err)
 		}
 		tx.Commit(ctx)
+		errcode = 0
 	}
 
 	return userID, errcode, nil

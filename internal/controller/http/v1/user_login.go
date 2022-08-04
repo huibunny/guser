@@ -78,8 +78,7 @@ type loginWxResponse struct {
 }
 
 type doLoginWxRequest struct {
-	Username string `json:"username" binding:"required"  example:"alice"`
-	Password string `json:"password" binding:"required"  example:"123456"`
+	Code string `json:"code" binding:"required"  example:"sdfksdfjsaljfsajfsk"`
 }
 
 // @Summary     LoginWx
@@ -102,13 +101,7 @@ func (r *loginRoutes) loginWx(c *gin.Context) {
 		return
 	}
 
-	errcode, token, err := r.t.Login(
-		c.Request.Context(),
-		entity.User{
-			Username: request.Username,
-			Password: request.Password,
-		},
-	)
+	errcode, token, err := r.t.LoginWx(c.Request.Context(), request.Code)
 	if err != nil {
 		r.l.Error(err, "http - v1 - doLogin")
 		errorResponse(c, http.StatusInternalServerError, "login service problems")

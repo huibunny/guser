@@ -10,7 +10,7 @@
             "request": "launch",
             "mode": "auto",
             "program":"${workspaceFolder}/cmd/app/main.go",
-            "args": [ "-consul", "172.16.12.11:8500", "-name", "user", "-folder", "dev", "-listen", ":8820"]
+            "args": [ "-consul", "localhost:8500", "-name", "user", "-folder", "dev", "-listen", ":8820"]
         }
     ]
 }
