@@ -32,9 +32,10 @@ type (
 
 	// Consul -.
 	Consul struct {
-		CheckApi string `env-required:"true" yaml:"checkapi"    env:"CONSUL_CHECKAPI"`
-		Interval string `env-required:"true" yaml:"interval"    env:"CONSUL_INTERVAL"`
-		Timeout  string `env-required:"true" yaml:"timeout"    env:"CONSUL_TIMEOUT"`
+		CheckApi string   `env-required:"true" yaml:"check_api"    env:"CONSUL_CHECKAPI"`
+		Interval string   `env-required:"true" yaml:"interval"    env:"CONSUL_INTERVAL"`
+		Timeout  string   `env-required:"true" yaml:"timeout"    env:"CONSUL_TIMEOUT"`
+		Tags     []string `yaml:"tags"`
 	}
 
 	// PG -.

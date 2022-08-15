@@ -22,7 +22,7 @@ import (
 // @version     1.0
 // @host        localhost:8820
 // @BasePath    /v1
-func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Login) {
+func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Login, checkApi string) {
 	// Options
 	handler.Use(gin.Logger())
 	handler.Use(gin.Recovery())
@@ -32,7 +32,7 @@ func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Login) {
 	handler.GET("/swagger/*any", swaggerHandler)
 
 	// K8s probe & consul
-	handler.GET("/healthz", func(c *gin.Context) { c.Status(http.StatusOK) })
+	handler.GET(checkApi, func(c *gin.Context) { c.Status(http.StatusOK) })
 
 	// Prometheus metrics
 	handler.GET("/metrics", gin.WrapH(promhttp.Handler()))

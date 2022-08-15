@@ -35,7 +35,7 @@ func Run(cfg *config.Config, port string) {
 	loginUserCase := usecase.New(repo.New(pg), cfg.App.TokenExpire, cfg.App.Secret, cfg.Wx.AppID, cfg.Wx.AppSecret)
 	// HTTP Server
 	handler := gin.New()
-	v1.NewRouter(handler, l, loginUserCase)
+	v1.NewRouter(handler, l, loginUserCase, cfg.Consul.CheckApi)
 	httpServer := httpserver.New(handler, httpserver.Port(port))
 	l.Info("app - Run - httpServer: " + port + ".")
 
