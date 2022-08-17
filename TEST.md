@@ -1,5 +1,13 @@
 # TEST
 
+## deregister service
+
+```bash
+
+curl -X PUT http://dog.ap:8500/v1/agent/service/deregister/user_172.16.12.8:8820
+
+```
+
 ## login 
 
 ```bash
