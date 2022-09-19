@@ -1,65 +1,107 @@
-basePath: /v1
 definitions:
-  v1.doLoginRequest:
+  entity.HTTPError:
     properties:
-      password:
-        example: "123456"
-        type: string
-      username:
-        example: alice
-        type: string
-    required:
-    - password
-    - username
-    type: object
-  v1.doLoginWxRequest:
-    properties:
-      password:
-        example: "123456"
-        type: string
-      username:
-        example: alice
-        type: string
-    required:
-    - password
-    - username
-    type: object
-  v1.loginResponse:
-    properties:
-      errcode:
-        example: 0
+      code:
+        example: 400
         type: integer
-      token:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw
-        type: string
-    type: object
-  v1.loginWxResponse:
-    properties:
-      errcode:
-        example: 0
-        type: integer
-      token:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw
-        type: string
-    type: object
-  v1.response:
-    properties:
       message:
-        example: success
+        example: status bad request
         type: string
     type: object
-host: localhost:8820
+  guser_internal_controller_http_v1.doLoginRequest:
+    properties:
+      password:
+        example: "123456"
+        type: string
+      username:
+        example: alice
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  guser_internal_controller_http_v1.doLoginWxRequest:
+    properties:
+      code:
+        example: sdfksdfjsaljfsajfsk
+        type: string
+    required:
+    - code
+    type: object
+  guser_internal_controller_http_v1.loginResponse:
+    properties:
+      errcode:
+        example: 0
+        type: integer
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw
+        type: string
+    type: object
+  guser_internal_controller_http_v1.loginWxResponse:
+    properties:
+      errcode:
+        example: 0
+        type: integer
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw
+        type: string
+    type: object
+  internal_controller_http_v1.doLoginRequest:
+    properties:
+      password:
+        example: "123456"
+        type: string
+      username:
+        example: alice
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  internal_controller_http_v1.doLoginWxRequest:
+    properties:
+      code:
+        example: sdfksdfjsaljfsajfsk
+        type: string
+    required:
+    - code
+    type: object
+  internal_controller_http_v1.loginResponse:
+    properties:
+      errcode:
+        example: 0
+        type: integer
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw
+        type: string
+    type: object
+  internal_controller_http_v1.loginWxResponse:
+    properties:
+      errcode:
+        example: 0
+        type: integer
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw
+        type: string
+    type: object
 info:
   contact: {}
-  description: Using a translation service as an example
-  title: guser API
-  version: "1.0"
 paths:
   /user/login:
     post:
       consumes:
       - application/json
-      description: Login system
+      description: "Login system by username and password.\n\n\n## request\n\n| field
+        | type | required | description |\n|:------|:------------|:---:|:----|\n|
+        username | string | Y | user's name. |\n| password | string | Y | user's password.
+        |\n\n\n\n## response\n\n| field | type | description |\n|:------|:----|:------------|\n|
+        errcode | int | error code: 200 - success, 400 - bad request, 404 - not found,
+        500 - internal server error.|\n| token | string | token string. |\n\n## example\n\n###
+        request\n\n```bash\n\ncurl \"http://localhost:8820/v1/user/login\" \\\n  -i
+        \\\n  -X 'POST' \\\n  -d '{\"username\":\"alice\", \"password\": \"123456\"}'
+        \n\n```\n\n#### response\n\n```json\n\nHTTP/1.1 200 OK\nContent-Type: application/json;
+        charset=utf-8\nDate: Mon, 19 Sep 2022 11:21:54 GMT\nContent-Length: 45\n\n{\n
+        \   \"errcode\": 0,\n    \"data\": \"fsdafsdafsafasdfsdafsdafsdafsdafsd\"\n}\n\n```\n\n"
       operationId: login
       parameters:
       - description: Login System
@@ -67,30 +109,43 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/v1.doLoginRequest'
+          $ref: '#/definitions/internal_controller_http_v1.doLoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.loginResponse'
+            $ref: '#/definitions/internal_controller_http_v1.loginResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/v1.response'
+            $ref: '#/definitions/entity.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/entity.HTTPError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/v1.response'
+            $ref: '#/definitions/entity.HTTPError'
       summary: Login
       tags:
-      - login
+      - user
   /user/loginwx:
     post:
       consumes:
       - application/json
-      description: Login system By Weixin
+      description: "Login system by weixin.\n\n\n## request\n\n| field | type | required
+        | description |\n|:------|:------------|:---:|:----|\n| code | string | Y
+        | weixin auth code. |\n\n\n\n## response\n\n| field | type | description |\n|:------|:----|:------------|\n|
+        errcode | int | error code: 200 - success, 400 - bad request, 404 - not found,
+        500 - internal server error.|\n| token | string | token string. |\n\n## example\n\n###
+        request\n\n```bash\n\ncurl \"http://localhost:8820/v1/user/loginwx\" \\\n
+        \ -i \\\n  -X 'POST' \\\n  -d '{\"code\":\"fsafsdfasfsa\"}' \n\n```\n\n####
+        response\n\n```json\n\nHTTP/1.1 200 OK\nContent-Type: application/json; charset=utf-8\nDate:
+        Mon, 19 Sep 2022 11:21:54 GMT\nContent-Length: 45\n\n{\n    \"errcode\": 0,\n
+        \   \"data\": \"fsdafsdafsafasdfsdafsdafsdafsdafsd\"\n}\n\n```\n\n"
       operationId: loginWx
       parameters:
       - description: Login System By Weixin
@@ -98,23 +153,27 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/v1.doLoginWxRequest'
+          $ref: '#/definitions/internal_controller_http_v1.doLoginWxRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.loginWxResponse'
+            $ref: '#/definitions/internal_controller_http_v1.loginWxResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/v1.response'
+            $ref: '#/definitions/entity.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/entity.HTTPError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/v1.response'
+            $ref: '#/definitions/entity.HTTPError'
       summary: LoginWx
       tags:
-      - loginWx
+      - user
 swagger: "2.0"

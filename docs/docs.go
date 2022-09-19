@@ -18,7 +18,7 @@ const docTemplate = `{
     "paths": {
         "/user/login": {
             "post": {
-                "description": "Login system",
+                "description": "Login system by username and password.\n\n\n## request\n\n| field | type | required | description |\n|:------|:------------|:---:|:----|\n| username | string | Y | user's name. |\n| password | string | Y | user's password. |\n\n\n\n## response\n\n| field | type | description |\n|:------|:----|:------------|\n| errcode | int | error code: 200 - success, 400 - bad request, 404 - not found, 500 - internal server error.|\n| token | string | token string. |\n\n## example\n\n### request\n\n` + "`" + `` + "`" + `` + "`" + `bash\n\ncurl \"http://localhost:8820/v1/user/login\" \\\n  -i \\\n  -X 'POST' \\\n  -d '{\"username\":\"alice\", \"password\": \"123456\"}' \n\n` + "`" + `` + "`" + `` + "`" + `\n\n#### response\n\n` + "`" + `` + "`" + `` + "`" + `json\n\nHTTP/1.1 200 OK\nContent-Type: application/json; charset=utf-8\nDate: Mon, 19 Sep 2022 11:21:54 GMT\nContent-Length: 45\n\n{\n    \"errcode\": 0,\n    \"data\": \"fsdafsdafsafasdfsdafsdafsdafsdafsd\"\n}\n\n` + "`" + `` + "`" + `` + "`" + `\n\n",
                 "consumes": [
                     "application/json"
                 ],
@@ -26,7 +26,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "login"
+                    "user"
                 ],
                 "summary": "Login",
                 "operationId": "login",
@@ -37,7 +37,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.doLoginRequest"
+                            "$ref": "#/definitions/internal_controller_http_v1.doLoginRequest"
                         }
                     }
                 ],
@@ -45,19 +45,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.loginResponse"
+                            "$ref": "#/definitions/internal_controller_http_v1.loginResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/v1.response"
+                            "$ref": "#/definitions/entity.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/entity.HTTPError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/v1.response"
+                            "$ref": "#/definitions/entity.HTTPError"
                         }
                     }
                 }
@@ -65,7 +71,7 @@ const docTemplate = `{
         },
         "/user/loginwx": {
             "post": {
-                "description": "Login system By Weixin",
+                "description": "Login system by weixin.\n\n\n## request\n\n| field | type | required | description |\n|:------|:------------|:---:|:----|\n| code | string | Y | weixin auth code. |\n\n\n\n## response\n\n| field | type | description |\n|:------|:----|:------------|\n| errcode | int | error code: 200 - success, 400 - bad request, 404 - not found, 500 - internal server error.|\n| token | string | token string. |\n\n## example\n\n### request\n\n` + "`" + `` + "`" + `` + "`" + `bash\n\ncurl \"http://localhost:8820/v1/user/loginwx\" \\\n  -i \\\n  -X 'POST' \\\n  -d '{\"code\":\"fsafsdfasfsa\"}' \n\n` + "`" + `` + "`" + `` + "`" + `\n\n#### response\n\n` + "`" + `` + "`" + `` + "`" + `json\n\nHTTP/1.1 200 OK\nContent-Type: application/json; charset=utf-8\nDate: Mon, 19 Sep 2022 11:21:54 GMT\nContent-Length: 45\n\n{\n    \"errcode\": 0,\n    \"data\": \"fsdafsdafsafasdfsdafsdafsdafsdafsd\"\n}\n\n` + "`" + `` + "`" + `` + "`" + `\n\n",
                 "consumes": [
                     "application/json"
                 ],
@@ -73,7 +79,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "loginWx"
+                    "user"
                 ],
                 "summary": "LoginWx",
                 "operationId": "loginWx",
@@ -84,7 +90,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.doLoginWxRequest"
+                            "$ref": "#/definitions/internal_controller_http_v1.doLoginWxRequest"
                         }
                     }
                 ],
@@ -92,19 +98,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.loginWxResponse"
+                            "$ref": "#/definitions/internal_controller_http_v1.loginWxResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/v1.response"
+                            "$ref": "#/definitions/entity.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/entity.HTTPError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/v1.response"
+                            "$ref": "#/definitions/entity.HTTPError"
                         }
                     }
                 }
@@ -112,72 +124,126 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "v1.doLoginRequest": {
-            "type": "object",
-            "required": [
-                "password",
-                "username"
-            ],
-            "properties": {
-                "password": {
-                    "type": "string",
-                    "example": "123456"
-                },
-                "username": {
-                    "type": "string",
-                    "example": "alice"
-                }
-            }
-        },
-        "v1.doLoginWxRequest": {
-            "type": "object",
-            "required": [
-                "password",
-                "username"
-            ],
-            "properties": {
-                "password": {
-                    "type": "string",
-                    "example": "123456"
-                },
-                "username": {
-                    "type": "string",
-                    "example": "alice"
-                }
-            }
-        },
-        "v1.loginResponse": {
+        "entity.HTTPError": {
             "type": "object",
             "properties": {
-                "errcode": {
+                "code": {
                     "type": "integer",
-                    "example": 0
+                    "example": 400
                 },
-                "token": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw"
-                }
-            }
-        },
-        "v1.loginWxResponse": {
-            "type": "object",
-            "properties": {
-                "errcode": {
-                    "type": "integer",
-                    "example": 0
-                },
-                "token": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw"
-                }
-            }
-        },
-        "v1.response": {
-            "type": "object",
-            "properties": {
                 "message": {
                     "type": "string",
-                    "example": "success"
+                    "example": "status bad request"
+                }
+            }
+        },
+        "guser_internal_controller_http_v1.doLoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "alice"
+                }
+            }
+        },
+        "guser_internal_controller_http_v1.doLoginWxRequest": {
+            "type": "object",
+            "required": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "sdfksdfjsaljfsajfsk"
+                }
+            }
+        },
+        "guser_internal_controller_http_v1.loginResponse": {
+            "type": "object",
+            "properties": {
+                "errcode": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw"
+                }
+            }
+        },
+        "guser_internal_controller_http_v1.loginWxResponse": {
+            "type": "object",
+            "properties": {
+                "errcode": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw"
+                }
+            }
+        },
+        "internal_controller_http_v1.doLoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "alice"
+                }
+            }
+        },
+        "internal_controller_http_v1.doLoginWxRequest": {
+            "type": "object",
+            "required": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "sdfksdfjsaljfsajfsk"
+                }
+            }
+        },
+        "internal_controller_http_v1.loginResponse": {
+            "type": "object",
+            "properties": {
+                "errcode": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw"
+                }
+            }
+        },
+        "internal_controller_http_v1.loginWxResponse": {
+            "type": "object",
+            "properties": {
+                "errcode": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjM2MDAsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlcm5hbWUiOiJhbGljZSJ9.u9Pha5vRrJ5meQasanfshl4hLBghLDzVF0rkX6ZdKLw"
                 }
             }
         }
@@ -186,12 +252,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
-	Host:             "localhost:8820",
-	BasePath:         "/v1",
+	Version:          "",
+	Host:             "",
+	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "guser API",
-	Description:      "Using a translation service as an example",
+	Title:            "",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

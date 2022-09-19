@@ -100,6 +100,10 @@ func (uc *UserUserCase) LoginWx(ctx context.Context, code string) (int, string, 
 		return -2, "", nil
 	}
 
+	if acsJson.ErrCode != 0 {
+		return int(acsJson.ErrCode), acsJson.ErrMsg, nil
+	}
+
 	var userId string
 	var errcode int
 	userId, errcode, err = uc.repo.CheckWxAccount(ctx, acsJson.OpenId, acsJson.UnionId)

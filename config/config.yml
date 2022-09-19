@@ -1,9 +1,7 @@
 app:
   name: 'user'
   version: '1.0.0'
-  appid: ''
-  appsecret: ''
-  token_expire: 3600
+  token_expire: 86400
   secret: 'howareyoutoday'
 
 logger:
@@ -11,11 +9,13 @@ logger:
   # rollbar_env: 'go-clean-template'
 
 consul:  
-  checkApi: '/healthz'
+  check_api: '/user/healthz'
   # consul心跳间隔, 秒
-  interval: 30
+  interval: '3'
   # 心跳超时, 秒
-  timeout: 20
+  timeout: '3'
+  tags: ['urlprefix-/user strip=/user']
+
 
 postgres:
   pool_max: 2

@@ -36,20 +36,21 @@ type doLoginRequest struct {
 }
 
 // @Summary     Login
-// @Description Login system
+// @Description.markdown login
 // @ID          login
-// @Tags  	    login
+// @Tags  	    user
 // @Accept      json
 // @Produce     json
 // @Param       request body doLoginRequest true "Login System"
 // @Success     200 {object} loginResponse
-// @Failure     400 {object} response
-// @Failure     500 {object} response
+// @Failure     400 {object} entity.HTTPError
+// @Failure     404 {object} entity.HTTPError
+// @Failure     500 {object} entity.HTTPError
 // @Router      /user/login [post]
 func (r *loginRoutes) login(c *gin.Context) {
 	var request doLoginRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
-		r.l.Error(err, "http - v1 - doTranslate")
+		r.l.Error(err, "http - v1 - login")
 		errorResponse(c, http.StatusBadRequest, "invalid request body")
 
 		return
@@ -82,20 +83,21 @@ type doLoginWxRequest struct {
 }
 
 // @Summary     LoginWx
-// @Description Login system By Weixin
+// @Description.markdown loginwx
 // @ID          loginWx
-// @Tags  	    loginWx
+// @Tags  	    user
 // @Accept      json
 // @Produce     json
 // @Param       request body doLoginWxRequest true "Login System By Weixin"
 // @Success     200 {object} loginWxResponse
-// @Failure     400 {object} response
-// @Failure     500 {object} response
+// @Failure     400 {object} entity.HTTPError
+// @Failure     404 {object} entity.HTTPError
+// @Failure     500 {object} entity.HTTPError
 // @Router      /user/loginwx [post]
 func (r *loginRoutes) loginWx(c *gin.Context) {
 	var request doLoginWxRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
-		r.l.Error(err, "http - v1 - doTranslate")
+		r.l.Error(err, "http - v1 - loginWx")
 		errorResponse(c, http.StatusBadRequest, "invalid request body")
 
 		return

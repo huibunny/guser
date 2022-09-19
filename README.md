@@ -7,7 +7,7 @@
 #  create docs.go at  docs/docs.go
 #  create swagger.json at  docs/swagger.json
 #  create swagger.yaml at  docs/swagger.yaml
-$ swag init --parseDependency --parseInternal -g cmd/app/main.go
+$ swag init --parseDependency --parseInternal -g cmd/app/main.go --md docs/md
 # $ swag init -g internal/controller/http/v1/router.go
 
 # run build.sh and it will output guser file.
